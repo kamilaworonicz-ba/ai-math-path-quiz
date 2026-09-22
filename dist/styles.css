@@ -402,7 +402,7 @@ input:focus-visible {
   border-radius: 20px;
   background: #f4f6ff;
 }
-.coin-board svg { width: min(100%, 430px); height: auto; overflow: visible; }
+.coin-board svg { width: min(100%, 520px); height: auto; overflow: hidden; }
 
 .quiz-actions { margin-top: 18px; display: flex; align-items: center; justify-content: space-between; }
 .text-button { padding: 12px 4px; border: 0; cursor: pointer; background: transparent; color: var(--muted); font-weight: 800; }
@@ -498,6 +498,66 @@ input:focus-visible {
 .restart-button { display: block; margin: 30px auto 0; }
 
 footer { min-height: 76px; border-top: 1px solid var(--line); }
+footer a { color: var(--blue); font-weight: 750; text-decoration-thickness: 1px; text-underline-offset: 3px; }
+footer a:hover { color: var(--blue-dark); }
+
+.feedback-dialog {
+  width: min(680px, calc(100% - 32px));
+  max-height: calc(100vh - 32px);
+  padding: 0;
+  border: 0;
+  border-radius: 28px;
+  overflow: auto;
+  background: var(--white);
+  color: var(--ink);
+  box-shadow: 0 30px 100px rgba(10, 18, 63, .35);
+}
+
+.feedback-dialog::backdrop { background: rgba(16, 21, 47, .67); backdrop-filter: blur(5px); }
+.feedback-content { padding: clamp(28px, 5vw, 50px); }
+.feedback-content h2 { margin: 0; font-size: clamp(1.9rem, 5vw, 3rem); line-height: 1.05; letter-spacing: -.05em; }
+.feedback-visual { margin: 26px 0 20px; }
+.feedback-explanation { margin: 0; color: var(--muted); font-size: 1rem; line-height: 1.65; }
+.feedback-next { margin-top: 26px; }
+
+.feedback-pattern {
+  padding: 24px;
+  border-radius: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(7px, 2vw, 17px);
+  background: #f4f6ff;
+}
+.feedback-pattern span { width: 52px; height: 52px; border: 2px solid var(--blue); border-radius: 50%; display: grid; place-items: center; color: var(--blue); font-size: 1.2rem; font-weight: 900; }
+.feedback-pattern span.highlight { border-color: var(--ink); background: var(--lime); color: var(--ink); }
+.feedback-pattern i { color: var(--muted); font-size: .78rem; font-style: normal; font-weight: 850; }
+
+.feedback-logic { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+.feedback-logic span { padding: 18px 12px; border: 1px solid var(--line); border-radius: 15px; display: grid; gap: 7px; justify-items: center; background: #f7f8fc; }
+.feedback-logic span.is-true { border-color: var(--blue); background: #eef1ff; }
+.feedback-logic b { font-size: .95rem; }
+.feedback-logic i { color: var(--muted); font-size: .76rem; font-style: normal; font-weight: 850; text-transform: uppercase; }
+.feedback-logic .is-true i { color: var(--blue); }
+
+.feedback-coin { padding: 6px; border-radius: 18px; background: #f4f6ff; }
+.feedback-coin svg { display: block; width: 100%; height: auto; }
+
+@media (min-width: 641px) and (max-height: 950px) {
+  .site-header { min-height: 66px; }
+  .app-shell { min-height: calc(100vh - 118px); align-items: start; }
+  .quiz-screen { margin: 8px auto 26px; }
+  .progress-block { margin-bottom: 12px; }
+  .question-card { min-height: 0; padding: 32px 46px; }
+  .question-heading .eyebrow { margin-bottom: 11px; }
+  .question-heading h2 { font-size: clamp(2rem, 3.6vw, 2.65rem); }
+  .question-help { margin-top: 9px; }
+  .answers { margin-top: 21px; gap: 8px; }
+  .answer-option { min-height: 56px; padding: 10px 16px; }
+  .selection-note { min-height: 17px; margin-top: 9px; }
+  .puzzle-stage { margin-top: 18px; }
+  .quiz-actions { margin-top: 10px; }
+}
 
 @media (max-width: 900px) {
   .start-screen.is-active { grid-template-columns: 1fr; }
@@ -546,6 +606,10 @@ footer { min-height: 76px; border-top: 1px solid var(--line); }
   .email-row { grid-template-columns: 1fr; }
   .email-row .primary-button { width: 100%; }
   footer { flex-direction: column; justify-content: center; gap: 4px; text-align: center; }
+  .feedback-content { padding: 30px 22px; }
+  .feedback-logic { grid-template-columns: 1fr; }
+  .feedback-pattern { padding: 18px 10px; }
+  .feedback-pattern span { width: 43px; height: 43px; }
 }
 
 @media (prefers-reduced-motion: reduce) {

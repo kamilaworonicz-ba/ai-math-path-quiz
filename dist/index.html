@@ -136,9 +136,21 @@
       </section>
     </main>
 
+    <dialog class="feedback-dialog" id="feedback-dialog" aria-labelledby="feedback-title">
+      <div class="feedback-content">
+        <p class="eyebrow">Answer revealed</p>
+        <h2 id="feedback-title"></h2>
+        <div class="feedback-visual" id="feedback-visual"></div>
+        <p class="feedback-explanation" id="feedback-explanation"></p>
+        <button class="primary-button feedback-next" id="feedback-next" type="button">
+          Got it — next challenge <span aria-hidden="true">→</span>
+        </button>
+      </div>
+    </dialog>
+
     <footer>
-      <span>Math Path · Interactive learning prototype</span>
-      <span>Designed for adult learners</span>
+      <span>Portfolio prototype by Kamila Woronicz</span>
+      <a href="mailto:kamila.woronicz@gmail.com">kamila.woronicz@gmail.com</a>
     </footer>
 
     <script src="./script.js"></script>

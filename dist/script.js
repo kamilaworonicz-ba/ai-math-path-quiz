@@ -156,6 +156,11 @@ const answersEl = document.querySelector("#answers");
 const selectionNote = document.querySelector("#selection-note");
 const nextButton = document.querySelector("#next-button");
 const backButton = document.querySelector("#back-button");
+const feedbackDialog = document.querySelector("#feedback-dialog");
+const feedbackTitle = document.querySelector("#feedback-title");
+const feedbackVisual = document.querySelector("#feedback-visual");
+const feedbackExplanation = document.querySelector("#feedback-explanation");
+const feedbackNext = document.querySelector("#feedback-next");
 
 function showScreen(screen) {
   [startScreen, quizScreen, resultScreen].forEach((item) => item.classList.remove("is-active"));
@@ -187,18 +192,18 @@ function puzzleMarkup(kind) {
   if (kind === "coin") {
     return `
       <div class="coin-board">
-        <svg viewBox="0 0 520 210" role="img" aria-label="One coin rolling around an identical stationary coin">
+        <svg viewBox="0 0 560 210" role="img" aria-label="A bright yellow coin positioned to the right of an identical stationary coin">
           <defs>
             <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="8" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#ff6b52" /></marker>
           </defs>
-          <circle cx="260" cy="120" r="64" fill="#dce3ff" stroke="#1738e8" stroke-width="4" />
-          <circle cx="260" cy="120" r="39" fill="none" stroke="#8998de" stroke-width="2" stroke-dasharray="6 7" />
-          <text x="260" y="126" text-anchor="middle" fill="#1738e8" font-weight="800" font-size="17">fixed</text>
-          <circle cx="260" cy="-8" r="64" fill="#dfff54" stroke="#10152f" stroke-width="4" />
-          <line x1="260" y1="-8" x2="260" y2="45" stroke="#10152f" stroke-width="4" stroke-linecap="round" />
-          <circle cx="260" cy="-8" r="7" fill="#10152f" />
-          <path d="M 345 38 A 125 125 0 0 1 405 135" fill="none" stroke="#ff6b52" stroke-width="5" stroke-linecap="round" marker-end="url(#arrowhead)" />
-          <text x="420" y="58" fill="#626986" font-size="15" font-weight="700">rolls around</text>
+          <circle cx="210" cy="105" r="60" fill="#dce3ff" stroke="#1738e8" stroke-width="4" />
+          <circle cx="210" cy="105" r="36" fill="none" stroke="#8998de" stroke-width="2" stroke-dasharray="6 7" />
+          <text x="210" y="111" text-anchor="middle" fill="#1738e8" font-weight="800" font-size="17">fixed</text>
+          <circle cx="330" cy="105" r="60" fill="#dfff54" stroke="#10152f" stroke-width="4" />
+          <line x1="330" y1="105" x2="278" y2="105" stroke="#10152f" stroke-width="4" stroke-linecap="round" />
+          <circle cx="330" cy="105" r="7" fill="#10152f" />
+          <path d="M 345 34 C 442 42 467 124 414 177" fill="none" stroke="#ff6b52" stroke-width="5" stroke-linecap="round" marker-end="url(#arrowhead)" />
+          <text x="442" y="73" fill="#626986" font-size="15" font-weight="700">rolls around</text>
         </svg>
       </div>`;
   }
@@ -265,6 +270,77 @@ function selectAnswer(question, value) {
 function updateNextState(question) {
   const answer = state.answers[question.id];
   nextButton.disabled = question.type === "multi" ? !answer || answer.length === 0 : !answer;
+}
+
+function feedbackMarkup(kind) {
+  if (kind === "dots") {
+    return `
+      <div class="feedback-pattern" aria-label="The sequence is 1, 3, 6, 10 dots">
+        <span>1</span><i>+2</i><span>3</span><i>+3</i><span>6</span><i>+4</i><span class="highlight">10</span>
+      </div>`;
+  }
+
+  if (kind === "logic") {
+    return `
+      <div class="feedback-logic" aria-label="Alex is false, Blake is true, and Casey is false">
+        <span><b>Alex</b><i>False</i></span>
+        <span class="is-true"><b>Blake</b><i>True</i></span>
+        <span><b>Casey</b><i>False</i></span>
+      </div>`;
+  }
+
+  return `
+    <div class="feedback-coin" aria-label="The moving coin completes two full rotations">
+      <svg viewBox="0 0 520 210" role="img" aria-label="A yellow coin travels around a fixed coin and turns twice">
+        <defs>
+          <marker id="feedback-arrow" markerWidth="10" markerHeight="7" refX="8" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#ff6b52" /></marker>
+        </defs>
+        <circle cx="195" cy="105" r="48" fill="#dce3ff" stroke="#1738e8" stroke-width="4" />
+        <text x="195" y="111" text-anchor="middle" fill="#1738e8" font-weight="800" font-size="15">fixed</text>
+        <circle cx="291" cy="105" r="48" fill="#dfff54" stroke="#10152f" stroke-width="4" />
+        <line x1="291" y1="105" x2="250" y2="105" stroke="#10152f" stroke-width="4" stroke-linecap="round" />
+        <path d="M 305 45 C 398 55 421 135 357 183" fill="none" stroke="#ff6b52" stroke-width="5" stroke-linecap="round" marker-end="url(#feedback-arrow)" />
+        <text x="405" y="95" text-anchor="middle" fill="#10152f" font-weight="900" font-size="28">2 turns</text>
+      </svg>
+    </div>`;
+}
+
+function showPuzzleFeedback(question) {
+  const isCorrect = state.answers[question.id] === question.correct;
+  const content = {
+    pattern: {
+      correct: "Nice catch — the answer is 10.",
+      other: "A tricky one — the answer is 10.",
+      explanation: "Each figure adds one more dot than the previous one: +2, then +3, then +4."
+    },
+    logic: {
+      correct: "Nicely reasoned — Blake is telling the truth.",
+      other: "A tricky one — Blake is telling the truth.",
+      explanation: "If Blake tells the truth, Casey is lying. That also makes Alex's statement false, leaving exactly one true statement."
+    },
+    spatial: {
+      correct: "Exactly — the moving coin makes 2 full turns.",
+      other: "This one challenges intuition — the answer is 2 full turns.",
+      explanation: "The moving coin's center travels a circle twice its own radius, so the journey equals two of the coin's circumferences."
+    }
+  }[question.id];
+
+  feedbackTitle.textContent = isCorrect ? content.correct : content.other;
+  feedbackVisual.innerHTML = feedbackMarkup(question.puzzle);
+  feedbackExplanation.textContent = content.explanation;
+  feedbackNext.innerHTML = state.step === questions.length - 1
+    ? `Got it — see my result <span aria-hidden="true">→</span>`
+    : `Got it — next challenge <span aria-hidden="true">→</span>`;
+  feedbackDialog.showModal();
+}
+
+function advanceQuiz() {
+  if (state.step < questions.length - 1) {
+    state.step += 1;
+    renderQuestion();
+  } else {
+    renderResult();
+  }
 }
 
 function add(scores, path, points) { scores[path] += points; }
@@ -370,12 +446,14 @@ document.querySelector("#start-button").addEventListener("click", () => {
 
 nextButton.addEventListener("click", () => {
   if (nextButton.disabled) return;
-  if (state.step < questions.length - 1) {
-    state.step += 1;
-    renderQuestion();
-  } else {
-    renderResult();
-  }
+  const question = questions[state.step];
+  if (question.puzzle) showPuzzleFeedback(question);
+  else advanceQuiz();
+});
+
+feedbackNext.addEventListener("click", () => {
+  feedbackDialog.close();
+  advanceQuiz();
 });
 
 backButton.addEventListener("click", () => {

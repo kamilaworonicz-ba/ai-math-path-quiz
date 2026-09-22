@@ -21,8 +21,6 @@ It is designed for adults who may want practical skills, statistical literacy, h
 
 ## 🧭 The Five Paths
 
-[#-the-five-paths](#-the-five-paths)
-
 - The Curious Explorer
 - The Practical Thinker
 - The Data Decoder
@@ -33,8 +31,6 @@ The first four questions drive the main recommendation. The three puzzles add a 
 
 
 ## 🧩 How the Segmentation Works
-
-[#-how-the-segmentation-works](#-how-the-segmentation-works)
 
 Each answer adds points to one or more paths; the quiz recommends the path with the highest score at the end. A simplified example:
 
@@ -50,8 +46,6 @@ This is the same underlying idea as TripleTen's path quiz: a handful of low-effo
 
 ## 📐 Prototype Scope
 
-[#-prototype-scope](#-prototype-scope)
-
 - Fully responsive single-page experience
 - Keyboard-friendly controls and clear focus states
 - Maximum of two selections for the motivation question
@@ -66,8 +60,6 @@ The recommended resources are illustrative content concepts created to demonstra
 
 ## 📊 If This Were a Live Product
 
-[#-if-this-were-a-live-product](#-if-this-were-a-live-product)
-
 Metrics I'd want to track to validate and iterate on the funnel:
 
 - Quiz start → completion rate (and drop-off point, if any single question underperforms)
@@ -77,8 +69,6 @@ Metrics I'd want to track to validate and iterate on the funnel:
 
 
 ## 📁 Files
-
-[#-files](#-files)
 
 ```text
 dist/
@@ -91,8 +81,6 @@ dist/
 
 ## 📬 Contact
 
-[#-contact](#-contact)
-
-**Kamila Woronicz**<br>
+**Kamila Woronicz** <br>
 Product Project Manager | Business Analyst <br>
 <kamila.woronicz@gmail.com>

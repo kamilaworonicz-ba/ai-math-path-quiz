@@ -93,6 +93,6 @@ dist/
 
 [#-contact](#-contact)
 
-Kamila Woronicz <br>
-Business Analyst | Product Manager (career transition)
+**Kamila Woronicz**<br>
+Product Project Manager | Business Analyst <br>
 <kamila.woronicz@gmail.com>

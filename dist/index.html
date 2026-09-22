@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="A two-minute quiz that matches adult learners with a math path they may actually enjoy."
+    />
+    <meta name="theme-color" content="#1738e8" />
+    <title>What Kind of Math Learner Are You?</title>
+    <link
+      rel="icon"
+      type="image/svg+xml"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%231738e8'/%3E%3Ccircle cx='20' cy='20' r='6' fill='%23dfff54'/%3E%3Ccircle cx='44' cy='20' r='6' fill='%23fff'/%3E%3Ccircle cx='20' cy='44' r='6' fill='%23fff'/%3E%3Ccircle cx='44' cy='44' r='6' fill='%23ff6b52'/%3E%3C/svg%3E"
+    />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div class="page-grid" aria-hidden="true"></div>
+
+    <header class="site-header">
+      <a class="brand" href="#" id="brand-link" aria-label="Math Path home">
+        <span class="brand-mark" aria-hidden="true">
+          <i></i><i></i><i></i><i></i>
+        </span>
+        <span>Math Path</span>
+      </a>
+      <span class="header-note">Made for curious adults</span>
+    </header>
+
+    <main class="app-shell">
+      <section class="start-screen screen is-active" id="start-screen" aria-labelledby="start-title">
+        <div class="start-copy">
+          <p class="eyebrow">A two-minute discovery quiz</p>
+          <h1 id="start-title">What kind of math learner are you?</h1>
+          <p class="lede">
+            Forget grades and formulas. Discover the ideas, puzzles, and everyday math that could
+            make you want to keep exploring.
+          </p>
+          <button class="primary-button" id="start-button" type="button">
+            Find my math path
+            <span aria-hidden="true">→</span>
+          </button>
+          <p class="microcopy">7 quick questions · No score · No sign-up required</p>
+        </div>
+
+        <div class="start-visual" aria-label="A playful collection of mathematical patterns">
+          <div class="orbit orbit-one"><span>½</span></div>
+          <div class="orbit orbit-two"><span>?</span></div>
+          <div class="orbit orbit-three"><span>π</span></div>
+          <div class="visual-card card-pattern">
+            <span></span><span></span><span></span><span></span><span></span><span></span>
+          </div>
+          <div class="visual-card card-chart">
+            <b></b><b></b><b></b><b></b>
+          </div>
+          <div class="visual-card card-fraction">3<span>/</span>4</div>
+        </div>
+      </section>
+
+      <section class="quiz-screen screen" id="quiz-screen" aria-live="polite">
+        <div class="progress-block">
+          <div class="progress-meta">
+            <span id="progress-label">Question 1 of 7</span>
+            <span id="progress-percent">14%</span>
+          </div>
+          <div class="progress-track" aria-hidden="true">
+            <span id="progress-bar"></span>
+          </div>
+        </div>
+
+        <div class="question-card" id="question-card">
+          <div class="question-heading">
+            <p class="eyebrow" id="question-kicker">About you</p>
+            <h2 id="question-title"></h2>
+            <p class="question-help" id="question-help"></p>
+          </div>
+          <div class="puzzle-stage" id="puzzle-stage"></div>
+          <div class="answers" id="answers"></div>
+          <p class="selection-note" id="selection-note" aria-live="polite"></p>
+        </div>
+
+        <div class="quiz-actions">
+          <button class="text-button" id="back-button" type="button">← Back</button>
+          <button class="primary-button next-button" id="next-button" type="button" disabled>
+            Continue <span aria-hidden="true">→</span>
+          </button>
+        </div>
+      </section>
+
+      <section class="result-screen screen" id="result-screen" aria-live="polite">
+        <div class="result-hero">
+          <div class="result-copy">
+            <p class="eyebrow">Your result</p>
+            <p class="thinking-summary" id="thinking-summary"></p>
+            <h2>Your Math Path: <span id="path-name"></span></h2>
+            <p class="path-description" id="path-description"></p>
+            <div class="skill-chips" id="skill-chips" aria-label="Your challenge snapshot"></div>
+          </div>
+          <div class="result-badge" id="result-badge" aria-hidden="true"></div>
+        </div>
+
+        <div class="recommendations-section">
+          <div class="section-heading">
+            <p class="eyebrow">Chosen for your path</p>
+            <h3>Recommended for you</h3>
+          </div>
+          <div class="recommendations" id="recommendations"></div>
+          <p class="concept-note">
+            These are illustrative content concepts created to demonstrate the personalization logic.
+          </p>
+        </div>
+
+        <div class="signup-panel">
+          <div>
+            <p class="eyebrow">Keep exploring</p>
+            <h3>One useful math idea. Once a week.</h3>
+            <p>
+              Get short, friendly lessons and puzzles selected for your path — no homework, no jargon.
+            </p>
+          </div>
+          <form class="email-form" id="email-form" novalidate>
+            <label for="email">Email address</label>
+            <div class="email-row">
+              <input id="email" name="email" type="email" autocomplete="email" placeholder="you@example.com" required />
+              <button class="primary-button" type="submit">Keep me posted</button>
+            </div>
+            <p class="form-message" id="form-message" aria-live="polite">
+              Portfolio prototype — your email will not be stored or sent.
+            </p>
+          </form>
+        </div>
+
+        <button class="text-button restart-button" id="restart-button" type="button">↻ Take the quiz again</button>
+      </section>
+    </main>
+
+    <footer>
+      <span>Math Path · Interactive learning prototype</span>
+      <span>Designed for adult learners</span>
+    </footer>
+
+    <script src="./script.js"></script>
+  </body>
+</html>

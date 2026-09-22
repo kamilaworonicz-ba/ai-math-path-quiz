@@ -69,14 +69,18 @@ const questions = [
     options: [["8", "8"], ["9", "9"], ["10", "10"], ["12", "12"]]
   },
   {
-    id: "logic",
-    kicker: "Quick challenge · Logic",
-    title: "Exactly one person is telling the truth. Who is it?",
-    help: "Test each statement against the other two.",
+    id: "reasoning",
+    kicker: "Quick challenge · Evidence",
+    title: "Which parts of the bombers should be reinforced?",
+    help: "During World War II, Allied analysts mapped damage on bombers that returned from missions.",
     type: "single",
-    puzzle: "logic",
-    correct: "blake",
-    options: [["alex", "Alex"], ["blake", "Blake"], ["casey", "Casey"], ["unclear", "It can't be determined"]]
+    puzzle: "survivorship",
+    correct: "vital",
+    options: [
+      ["visible", "Wings and fuselage — they show the most hits"],
+      ["vital", "Engines and cockpit — they show the fewest hits"],
+      ["unclear", "There is not enough information"]
+    ]
   },
   {
     id: "spatial",
@@ -172,20 +176,35 @@ function puzzleMarkup(kind) {
   if (kind === "dots") {
     return `
       <div class="dot-sequence" aria-label="A sequence containing one dot, three dots, six dots, then an unknown number">
-        <div class="dot-figure"><div class="dot-stack one"><i class="dot"></i></div><span>1</span></div>
-        <div class="dot-figure"><div class="dot-stack two"><i class="dot"></i><i class="dot"></i><i class="dot"></i></div><span>2</span></div>
-        <div class="dot-figure"><div class="dot-stack three"><i class="dot"></i><i class="dot"></i><i class="dot"></i><i class="dot"></i><i class="dot"></i><i class="dot"></i></div><span>3</span></div>
+        <div class="dot-figure">
+          <div class="dot-stack"><span class="dot-row"><i class="dot"></i></span></div><span>1</span>
+        </div>
+        <div class="dot-figure">
+          <div class="dot-stack"><span class="dot-row"><i class="dot"></i></span><span class="dot-row"><i class="dot"></i><i class="dot"></i></span></div><span>2</span>
+        </div>
+        <div class="dot-figure">
+          <div class="dot-stack"><span class="dot-row"><i class="dot"></i></span><span class="dot-row"><i class="dot"></i><i class="dot"></i></span><span class="dot-row"><i class="dot"></i><i class="dot"></i><i class="dot"></i></span></div><span>3</span>
+        </div>
         <div class="dot-figure"><div class="dot-question">?</div><span>4</span></div>
       </div>`;
   }
 
-  if (kind === "logic") {
+  if (kind === "survivorship") {
     return `
-      <div class="logic-board">
-        <div class="statement"><strong>Alex:</strong> “Blake is lying.”</div>
-        <div class="statement"><strong>Blake:</strong> “Casey is lying.”</div>
-        <div class="statement"><strong>Casey:</strong> “Alex and Blake are both telling the truth.”</div>
-        <p class="logic-rule">Exactly one of these three statements is true.</p>
+      <div class="survivorship-board" aria-label="Returned planes show many hits on the wings and fuselage, but few on the engines and cockpit">
+        <p class="damage-heading">Damage recorded on returning bombers</p>
+        <div class="damage-comparison">
+          <div class="damage-zone is-heavy">
+            <strong>Wings + fuselage</strong>
+            <span class="hit-field" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>
+            <small>Many hits</small>
+          </div>
+          <div class="damage-zone is-light">
+            <strong>Engines + cockpit</strong>
+            <span class="hit-field" aria-hidden="true"><i></i><i></i></span>
+            <small>Few hits</small>
+          </div>
+        </div>
       </div>`;
   }
 
@@ -221,7 +240,7 @@ function renderQuestion() {
   questionHelp.textContent = question.help;
   puzzleStage.innerHTML = question.puzzle ? puzzleMarkup(question.puzzle) : "";
   answersEl.innerHTML = "";
-  answersEl.className = `answers ${question.options.length > 4 ? "single-column" : ""}`;
+  answersEl.className = `answers ${question.options.length > 4 || question.id === "reasoning" ? "single-column" : ""}`;
   selectionNote.textContent = question.type === "multi" ? "Choose one or two options." : "";
 
   question.options.forEach(([value, label]) => {
@@ -280,27 +299,68 @@ function feedbackMarkup(kind) {
       </div>`;
   }
 
-  if (kind === "logic") {
+  if (kind === "survivorship") {
     return `
-      <div class="feedback-logic" aria-label="Alex is false, Blake is true, and Casey is false">
-        <span><b>Alex</b><i>False</i></span>
-        <span class="is-true"><b>Blake</b><i>True</i></span>
-        <span><b>Casey</b><i>False</i></span>
+      <div class="feedback-survivorship" aria-label="Returned aircraft reveal survivable damage, while missing aircraft reveal the vulnerable areas">
+        <div class="evidence-card">
+          <span>What we can see</span>
+          <b>Returned aircraft</b>
+          <p>Many had hits on their wings and fuselage — and still made it home.</p>
+        </div>
+        <div class="evidence-card is-missing">
+          <span>What is missing</span>
+          <b>Aircraft that did not return</b>
+          <p>Hits to engines or the cockpit were more likely to prevent a safe return.</p>
+        </div>
+      </div>`;
+  }
+
+  const reducedMotion = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
+
+  if (reducedMotion) {
+    return `
+      <div class="feedback-coin" aria-label="One orbit around the fixed coin produces two full turns">
+        <svg viewBox="0 0 620 300" role="img" aria-label="A yellow coin beside a fixed coin, with an orbit showing that one lap equals two turns">
+          <defs>
+            <marker id="feedback-arrow-static" markerWidth="10" markerHeight="7" refX="8" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#ff6b52" /></marker>
+          </defs>
+          <circle cx="200" cy="150" r="104" fill="none" stroke="#aab5dc" stroke-width="3" stroke-dasharray="7 9" />
+          <circle cx="200" cy="150" r="52" fill="#dce3ff" stroke="#1738e8" stroke-width="4" />
+          <text x="200" y="156" text-anchor="middle" fill="#1738e8" font-weight="800" font-size="15">fixed</text>
+          <circle cx="304" cy="150" r="52" fill="#dfff54" stroke="#10152f" stroke-width="4" />
+          <line x1="304" y1="150" x2="304" y2="111" stroke="#10152f" stroke-width="5" stroke-linecap="round" />
+          <circle cx="304" cy="111" r="7" fill="#ff6b52" />
+          <path d="M 273 55 A 104 104 0 0 0 104 150" fill="none" stroke="#ff6b52" stroke-width="5" stroke-linecap="round" marker-end="url(#feedback-arrow-static)" />
+          <text x="450" y="132" text-anchor="middle" fill="#10152f" font-weight="900" font-size="25">One full orbit</text>
+          <text x="450" y="168" text-anchor="middle" fill="#1738e8" font-weight="900" font-size="25">= two turns</text>
+          <text x="450" y="198" text-anchor="middle" fill="#59617a" font-weight="700" font-size="14">Follow the orange marker</text>
+        </svg>
       </div>`;
   }
 
   return `
-    <div class="feedback-coin" aria-label="The moving coin completes two full rotations">
-      <svg viewBox="0 0 520 210" role="img" aria-label="A yellow coin travels around a fixed coin and turns twice">
-        <defs>
-          <marker id="feedback-arrow" markerWidth="10" markerHeight="7" refX="8" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#ff6b52" /></marker>
-        </defs>
-        <circle cx="195" cy="105" r="48" fill="#dce3ff" stroke="#1738e8" stroke-width="4" />
-        <text x="195" y="111" text-anchor="middle" fill="#1738e8" font-weight="800" font-size="15">fixed</text>
-        <circle cx="291" cy="105" r="48" fill="#dfff54" stroke="#10152f" stroke-width="4" />
-        <line x1="291" y1="105" x2="250" y2="105" stroke="#10152f" stroke-width="4" stroke-linecap="round" />
-        <path d="M 305 45 C 398 55 421 135 357 183" fill="none" stroke="#ff6b52" stroke-width="5" stroke-linecap="round" marker-end="url(#feedback-arrow)" />
-        <text x="405" y="95" text-anchor="middle" fill="#10152f" font-weight="900" font-size="28">2 turns</text>
+    <div class="feedback-coin" aria-label="Animation: the moving coin completes two full rotations during one orbit">
+      <svg viewBox="0 0 620 300" role="img" aria-label="A yellow coin rolls around a fixed coin. Its orange marker turns twice during one complete orbit.">
+        <circle cx="200" cy="150" r="104" fill="none" stroke="#aab5dc" stroke-width="3" stroke-dasharray="7 9" />
+        <circle cx="200" cy="150" r="52" fill="#dce3ff" stroke="#1738e8" stroke-width="4" />
+        <text x="200" y="156" text-anchor="middle" fill="#1738e8" font-weight="800" font-size="15">fixed</text>
+
+        <g transform="translate(200 150)">
+          <g>
+            <animateMotion dur="5.5s" repeatCount="indefinite" path="M 104 0 A 104 104 0 1 1 -104 0 A 104 104 0 1 1 104 0" />
+            <g>
+              <animateTransform attributeName="transform" type="rotate" from="0 0 0" to="720 0 0" dur="5.5s" repeatCount="indefinite" />
+              <circle cx="0" cy="0" r="52" fill="#dfff54" stroke="#10152f" stroke-width="4" />
+              <line x1="0" y1="0" x2="0" y2="-39" stroke="#10152f" stroke-width="5" stroke-linecap="round" />
+              <circle cx="0" cy="-39" r="7" fill="#ff6b52" />
+              <circle cx="0" cy="0" r="5" fill="#10152f" />
+            </g>
+          </g>
+        </g>
+
+        <text x="450" y="122" text-anchor="middle" fill="#10152f" font-weight="900" font-size="25">Watch the marker</text>
+        <text x="450" y="160" text-anchor="middle" fill="#1738e8" font-weight="900" font-size="25">One orbit = two turns</text>
+        <text x="450" y="192" text-anchor="middle" fill="#59617a" font-weight="700" font-size="14">The animation repeats</text>
       </svg>
     </div>`;
 }
@@ -313,15 +373,15 @@ function showPuzzleFeedback(question) {
       other: "A tricky one — the answer is 10.",
       explanation: "Each figure adds one more dot than the previous one: +2, then +3, then +4."
     },
-    logic: {
-      correct: "Nicely reasoned — Blake is telling the truth.",
-      other: "A tricky one — Blake is telling the truth.",
-      explanation: "If Blake tells the truth, Casey is lying. That also makes Alex's statement false, leaving exactly one true statement."
+    reasoning: {
+      correct: "Exactly — reinforce the engines and cockpit.",
+      other: "The key is the aircraft missing from the data.",
+      explanation: "The maps included only planes that returned. Damage to wings and fuselage was often survivable; aircraft hit in vital areas were less likely to come back. This is survivorship bias."
     },
     spatial: {
-      correct: "Exactly — the moving coin makes 2 full turns.",
-      other: "This one challenges intuition — the answer is 2 full turns.",
-      explanation: "The moving coin's center travels a circle twice its own radius, so the journey equals two of the coin's circumferences."
+      correct: "Exactly — now watch what happens.",
+      other: "This one challenges intuition — watch the marker closely.",
+      explanation: "During one complete trip around the fixed coin, the marker completes two full rotations. The moving coin's center follows a circle twice the coin's own radius."
     }
   }[question.id];
 
@@ -392,18 +452,18 @@ function calculatePath() {
 function challengeProfile() {
   const correct = {
     pattern: state.answers.pattern === "10",
-    logic: state.answers.logic === "blake",
+    reasoning: state.answers.reasoning === "vital",
     spatial: state.answers.spatial === "2"
   };
   const total = Object.values(correct).filter(Boolean).length;
   let summary;
 
-  if (total === 3) summary = "You move comfortably between patterns, logic, and visual intuition — without needing calculation-heavy tasks.";
-  else if (correct.pattern && correct.logic) summary = "You seem to enjoy logic and pattern-based challenges more than calculation-heavy tasks.";
+  if (total === 3) summary = "You move comfortably between patterns, evidence, and visual intuition — without needing calculation-heavy tasks.";
+  else if (correct.pattern && correct.reasoning) summary = "You connect patterns with careful, evidence-based reasoning.";
   else if (correct.pattern && correct.spatial) summary = "You quickly notice visual patterns and are willing to question your first instinct.";
-  else if (correct.logic && correct.spatial) summary = "Rule-based reasoning and visual puzzles appear to bring out your strongest thinking.";
+  else if (correct.reasoning && correct.spatial) summary = "Evidence-based reasoning and visual puzzles appear to bring out your strongest thinking.";
   else if (correct.pattern) summary = "Growing patterns catch your eye quickly — a useful instinct for exploring mathematical ideas.";
-  else if (correct.logic) summary = "You appear most at home when a problem rewards careful, rule-based reasoning.";
+  else if (correct.reasoning) summary = "You appear most at home when a problem rewards questioning the evidence in front of you.";
   else if (correct.spatial) summary = "Your visual intuition stands out, especially when a problem asks you to picture movement.";
   else summary = "These puzzles were designed to challenge first instincts — your path reflects what you want from math, not a test score.";
 
@@ -421,7 +481,7 @@ function renderResult() {
 
   const chipLabels = [
     ["pattern", "Pattern spotting"],
-    ["logic", "Logical reasoning"],
+    ["reasoning", "Evidence-based reasoning"],
     ["spatial", "Visual intuition"]
   ];
   document.querySelector("#skill-chips").innerHTML = chipLabels.map(([key, label]) =>

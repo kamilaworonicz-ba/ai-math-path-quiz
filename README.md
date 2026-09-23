@@ -8,7 +8,7 @@ A responsive, interactive quiz concept for adult learners. The experience segmen
 
 ## 🎯 Why This Project Exists
 
-This prototype was built as a companion piece to my [Digital Editorial Workflow System](LINK) case study, to demonstrate a different kind of content skill: designing a lightweight, personalized acquisition funnel rather than a long-form curriculum product.
+This prototype complements my [Physics Textbook Launch](https://github.com/kamilaworonicz-ba/physics-product-launch) case study. While that project shows how I developed and launched a full educational product, this quiz demonstrates how I design a short, personalized experience to engage potential learners.
 
 It's modeled on the logic behind TripleTen's own career-path quiz ("Find the tech learning path that fits you best"), applied to a different audience and topic — adult learners deciding whether and how to re-engage with math. The goal was to show how interactive content can turn broad audience insight into a useful, personalized next step:
 

@@ -4,7 +4,7 @@ A responsive, interactive quiz concept for adult learners. The experience segmen
 
 `Status: Prototype` `Type: Portfolio Concept` `Domain: EdTech / Content Growth` `Methods: Segmentation Logic / Lead-Gen Funnel Design`
 
-🔗 **[Try the quiz](LINK_TO_LIVE_QUIZ)**
+🔗 **[Try the quiz](https://kamilaworonicz-ba.github.io/ai-math-path-quiz/)**
 
 ## 🎯 Why This Project Exists
 

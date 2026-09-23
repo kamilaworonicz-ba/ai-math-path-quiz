@@ -1,6 +1,6 @@
 # What Kind of Math Learner Are You?
 
-A responsive, interactive quiz concept for adult learners. The experience segments users by motivation and life context, adds three low-stakes reasoning challenges, and recommends a personalized learning path.
+A responsive, interactive quiz concept for adult learners. The experience segments users by motivation and life context, adds two low-stakes reasoning challenges, and recommends a personalized learning path.
 
 `Status: Prototype` `Type: Portfolio Concept` `Domain: EdTech / Content Growth` `Methods: Segmentation Logic / Lead-Gen Funnel Design`
 
@@ -25,7 +25,7 @@ It is designed for adults who may want practical skills, statistical literacy, h
 - The Math Parent
 - The Confidence Builder
 
-The first four questions drive the main recommendation. The three puzzles add a short, non-judgmental observation about pattern recognition, evidence-based reasoning, and visual intuition. They are not presented as a math score.
+The first four questions drive the main recommendation. The two puzzles add a short, non-judgmental observation about pattern recognition and evidence-based reasoning. They are not presented as a math score.
 
 
 ## 🧩 How the Segmentation Works
@@ -34,10 +34,11 @@ Each answer adds points to one or more paths; the quiz recommends the path with 
 
 | Question | Signal | Path(s) it points to |
 |---|---|---|
-| "What pulls you toward math?" (motivation, max 2 selections) | "I like puzzles for fun" | The Curious Explorer |
-| | "I want to help my kid with homework" | The Math Parent |
-| "How do you usually deal with numbers in daily life?" (context) | "I check the math before trusting a claim" | The Data Decoder |
-| Puzzle answers | Correct pattern-recognition answer, low confidence rating | The Confidence Builder (secondary signal) |
+| "What would you like to get out of a math course?" (up to 2 goals) | "Have fun and challenge my brain" | The Curious Explorer |
+| | "Help my child with math" | The Math Parent |
+| "Where does math show up in your life most often?" | "News and statistics" | The Data Decoder |
+
+The two challenge answers shape the result-page snapshot; the five-path recommendation uses the first four questions.
 
 This is the same underlying idea as TripleTen's path quiz: a handful of low-effort questions map to a small set of pre-written content bundles, so the "personalization" is really a well-designed lookup table, not a black box — which keeps it fast to build, easy to QA, and easy to extend with new content later.
 
@@ -48,7 +49,7 @@ This is the same underlying idea as TripleTen's path quiz: a handful of low-effo
 - Keyboard-friendly controls and clear focus states
 - Maximum of two selections for the motivation question
 - Point-based segmentation across five paths
-- Supportive answer reveals with visual explanations for all three challenges
+- Supportive answer reveals with visual explanations for both challenges
 - Personalized result explanation and challenge snapshot
 - Three illustrative content concepts per path
 - Simulated email confirmation state
@@ -63,7 +64,7 @@ Metrics I'd want to track to validate and iterate on the funnel:
 - Quiz start → completion rate (and drop-off point, if any single question underperforms)
 - Distribution of users across the five paths (are any paths over/under-represented — a sign questions need rebalancing?)
 - Result page → email opt-in rate
-- A/B test candidates: motivation question wording, number of questions (7 vs. a shorter 4-question version), placement of the email CTA (before vs. after the challenge snapshot)
+- A/B test candidates: motivation question wording, number of questions (6 vs. a shorter 4-question version), placement of the email CTA (before vs. after the challenge snapshot)
 
 
 ## 📁 Files

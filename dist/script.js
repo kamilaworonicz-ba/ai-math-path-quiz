@@ -82,17 +82,6 @@ const questions = [
       ["vital", "Engines and cockpit — they show the fewest hits"],
       ["unclear", "There is not enough information"]
     ]
-  },
-  {
-    id: "spatial",
-    kicker: "Quick challenge · Visual intuition",
-    title: "How many times does the moving coin rotate during one full orbit?",
-    help: "Assume it rolls without slipping.",
-    answerPrompt: "How many times does the moving coin rotate during one full orbit?",
-    type: "single",
-    puzzle: "coin",
-    correct: "2",
-    options: [["1", "1 turn"], ["1.5", "1½ turns"], ["2", "2 turns"], ["3", "3 turns"]]
   }
 ];
 
@@ -150,10 +139,6 @@ const paths = {
 };
 
 const state = { step: 0, answers: {} };
-const US_DOLLAR_COIN_OBVERSE_IMAGE = "https://www.usmint.gov/learn/coins-and-medals/circulating-coins/susan-b-anthony-dollar/_jcr_content/root/container_1426747781/imagegallerypdp/image.coreimg.jpeg/1757100978937/1999-susan-b-anthony-dollar-obverse.jpeg";
-const US_DOLLAR_COIN_REVERSE_IMAGE = "https://www.usmint.gov/learn/coins-and-medals/circulating-coins/susan-b-anthony-dollar/_jcr_content/root/container_1426747781/imagegallerypdp/item_1742502596121.coreimg.jpeg/1757101006286/1999-susan-b-anthony-dollar-reverse.jpeg";
-const US_DOLLAR_COIN_SOURCE = "https://www.usmint.gov/learn/coins-and-medals/circulating-coins/susan-b-anthony-dollar";
-
 const startScreen = document.querySelector("#start-screen");
 const quizScreen = document.querySelector("#quiz-screen");
 const resultScreen = document.querySelector("#result-screen");
@@ -171,23 +156,11 @@ const feedbackTitle = document.querySelector("#feedback-title");
 const feedbackVisual = document.querySelector("#feedback-visual");
 const feedbackExplanation = document.querySelector("#feedback-explanation");
 const feedbackNext = document.querySelector("#feedback-next");
-let coinAnimationFrame = null;
 
 function showScreen(screen) {
   [startScreen, quizScreen, resultScreen].forEach((item) => item.classList.remove("is-active"));
   screen.classList.add("is-active");
   window.scrollTo({ top: 0, behavior: "smooth" });
-}
-
-function coinImageMarkup(radius, clipId, imageUrl) {
-  const diameter = radius * 2;
-  return `
-    <circle cx="0" cy="0" r="${radius}" fill="#d9dce4" />
-    <image href="${imageUrl}" x="-${radius}" y="-${radius}" width="${diameter}" height="${diameter}" preserveAspectRatio="xMidYMid slice" clip-path="url(#${clipId})" />`;
-}
-
-function coinCreditMarkup() {
-  return `<p class="coin-credit"><a href="${US_DOLLAR_COIN_SOURCE}" target="_blank" rel="noreferrer">United States Mint image</a></p>`;
 }
 
 function puzzleMarkup(kind) {
@@ -226,25 +199,6 @@ function puzzleMarkup(kind) {
       </div>`;
   }
 
-  if (kind === "coin") {
-    return `
-      <div class="coin-board">
-        <svg viewBox="0 0 560 245" role="img" aria-label="A moving United States dollar coin positioned to the left of an identical stationary coin">
-          <defs>
-            <marker id="arrowhead" markerWidth="6" markerHeight="5" refX="5.2" refY="2.5" orient="auto"><polygon points="0 0, 6 2.5, 0 5" fill="#59617a" /></marker>
-            <clipPath id="question-moving-coin" clipPathUnits="userSpaceOnUse"><circle cx="0" cy="0" r="60" /></clipPath>
-            <clipPath id="question-fixed-coin" clipPathUnits="userSpaceOnUse"><circle cx="0" cy="0" r="60" /></clipPath>
-          </defs>
-          <circle cx="325" cy="120" r="120" fill="none" stroke="#aab5dc" stroke-width="3" stroke-dasharray="7 9" />
-          <path d="M 205 120 A 120 120 0 0 0 265 224" fill="none" stroke="#59617a" stroke-width="3" stroke-linecap="round" marker-end="url(#arrowhead)" />
-          <g transform="translate(205 120)">${coinImageMarkup(60, "question-moving-coin", US_DOLLAR_COIN_OBVERSE_IMAGE)}</g>
-          <g transform="translate(325 120)">${coinImageMarkup(60, "question-fixed-coin", US_DOLLAR_COIN_REVERSE_IMAGE)}</g>
-          <text x="205" y="204" text-anchor="middle" fill="#9e3c2d" font-weight="850" font-size="15">moving coin</text>
-          <text x="325" y="204" text-anchor="middle" fill="#1738e8" font-weight="850" font-size="15">fixed coin</text>
-        </svg>
-        ${coinCreditMarkup()}
-      </div>`;
-  }
   return "";
 }
 
@@ -334,87 +288,7 @@ function feedbackMarkup(kind) {
       </div>`;
   }
 
-  const reducedMotion = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
-
-  if (reducedMotion) {
-    return `
-      <div class="feedback-coin" aria-label="One orbit around the fixed coin produces two full turns">
-        <svg viewBox="0 0 620 300" role="img" aria-label="A moving United States dollar coin starts to the left of a fixed coin; one orbit produces two full turns">
-          <defs>
-            <marker id="feedback-arrow-static" markerWidth="6" markerHeight="5" refX="5.2" refY="2.5" orient="auto"><polygon points="0 0, 6 2.5, 0 5" fill="#59617a" /></marker>
-            <clipPath id="feedback-static-moving" clipPathUnits="userSpaceOnUse"><circle cx="0" cy="0" r="52" /></clipPath>
-            <clipPath id="feedback-static-fixed" clipPathUnits="userSpaceOnUse"><circle cx="0" cy="0" r="52" /></clipPath>
-          </defs>
-          <circle cx="250" cy="145" r="104" fill="none" stroke="#aab5dc" stroke-width="3" stroke-dasharray="7 9" />
-          <path d="M 146 145 A 104 104 0 0 1 250 41" fill="none" stroke="#59617a" stroke-width="3" stroke-linecap="round" marker-end="url(#feedback-arrow-static)" />
-          <g transform="translate(146 145)">${coinImageMarkup(52, "feedback-static-moving", US_DOLLAR_COIN_OBVERSE_IMAGE)}<line x1="0" y1="0" x2="0" y2="-39" stroke="#10152f" stroke-width="5" stroke-linecap="round" /><circle cx="0" cy="-39" r="7" fill="#ff6b52" /></g>
-          <g transform="translate(250 145)">${coinImageMarkup(52, "feedback-static-fixed", US_DOLLAR_COIN_REVERSE_IMAGE)}</g>
-          <text x="476" y="125" text-anchor="middle" fill="#10152f" font-weight="900" font-size="24">One full orbit</text>
-          <text x="476" y="162" text-anchor="middle" fill="#1738e8" font-weight="900" font-size="24">= two turns</text>
-          <text x="476" y="192" text-anchor="middle" fill="#59617a" font-weight="700" font-size="14">Follow the orange marker</text>
-        </svg>
-        ${coinCreditMarkup()}
-      </div>`;
-  }
-
-  return `
-    <div class="feedback-coin" aria-label="Animation: the moving coin completes two full rotations during one orbit">
-      <svg viewBox="0 0 620 300" role="img" aria-label="A moving United States dollar coin starts to the left of a fixed coin and rotates twice during one complete orbit.">
-        <defs>
-          <clipPath id="feedback-moving-coin" clipPathUnits="userSpaceOnUse"><circle cx="0" cy="0" r="52" /></clipPath>
-          <clipPath id="feedback-fixed-coin" clipPathUnits="userSpaceOnUse"><circle cx="0" cy="0" r="52" /></clipPath>
-        </defs>
-        <circle cx="250" cy="150" r="104" fill="none" stroke="#aab5dc" stroke-width="3" stroke-dasharray="7 9" />
-        <g transform="translate(250 150)">${coinImageMarkup(52, "feedback-fixed-coin", US_DOLLAR_COIN_REVERSE_IMAGE)}</g>
-
-        <g transform="translate(250 150)">
-          <g class="coin-orbit" transform="rotate(0)">
-            <g transform="translate(-104 0)">
-              <g class="coin-spin" transform="rotate(0)">
-                ${coinImageMarkup(52, "feedback-moving-coin", US_DOLLAR_COIN_OBVERSE_IMAGE)}
-                <line x1="0" y1="0" x2="0" y2="-39" stroke="#10152f" stroke-width="5" stroke-linecap="round" />
-                <circle cx="0" cy="-39" r="7" fill="#ff6b52" />
-              </g>
-            </g>
-          </g>
-        </g>
-
-        <text x="486" y="122" text-anchor="middle" fill="#10152f" font-weight="900" font-size="24">Watch the marker</text>
-        <text x="486" y="160" text-anchor="middle" fill="#1738e8" font-weight="900" font-size="24">One orbit = two turns</text>
-      </svg>
-      ${coinCreditMarkup()}
-    </div>`;
-}
-
-function stopCoinAnimation() {
-  if (coinAnimationFrame !== null) cancelAnimationFrame(coinAnimationFrame);
-  coinAnimationFrame = null;
-}
-
-function startCoinAnimation() {
-  stopCoinAnimation();
-  const orbit = feedbackVisual.querySelector(".coin-orbit");
-  const spin = feedbackVisual.querySelector(".coin-spin");
-  if (!orbit || !spin) return;
-
-  const startAt = performance.now() + 500;
-  const orbitDuration = 5500;
-
-  function animateCoin(now) {
-    if (!feedbackDialog.open || !orbit.isConnected) {
-      coinAnimationFrame = null;
-      return;
-    }
-
-    const elapsed = Math.max(0, now - startAt);
-    const progress = (elapsed % orbitDuration) / orbitDuration;
-    const angle = elapsed === 0 ? 0 : -360 * progress;
-    orbit.setAttribute("transform", `rotate(${angle})`);
-    spin.setAttribute("transform", `rotate(${angle})`);
-    coinAnimationFrame = requestAnimationFrame(animateCoin);
-  }
-
-  coinAnimationFrame = requestAnimationFrame(animateCoin);
+  return "";
 }
 
 function showPuzzleFeedback(question) {
@@ -429,11 +303,6 @@ function showPuzzleFeedback(question) {
       correct: "Exactly — reinforce the engines and cockpit.",
       other: "The key is the aircraft missing from the data.",
       explanation: "The maps included only planes that returned. Damage to wings and fuselage was often survivable; aircraft hit in vital areas were less likely to come back. This is survivorship bias."
-    },
-    spatial: {
-      correct: "Exactly — now watch what happens.",
-      other: "This one challenges intuition — watch the marker closely.",
-      explanation: "During one complete trip around the fixed coin, the marker completes two full rotations. The moving coin's center follows a circle twice the coin's own radius."
     }
   }[question.id];
 
@@ -444,7 +313,6 @@ function showPuzzleFeedback(question) {
     ? `Got it — see my result <span aria-hidden="true">→</span>`
     : `Got it — next challenge <span aria-hidden="true">→</span>`;
   feedbackDialog.showModal();
-  startCoinAnimation();
 }
 
 function advanceQuiz() {
@@ -505,19 +373,13 @@ function calculatePath() {
 function challengeProfile() {
   const correct = {
     pattern: state.answers.pattern === "10",
-    reasoning: state.answers.reasoning === "vital",
-    spatial: state.answers.spatial === "2"
+    reasoning: state.answers.reasoning === "vital"
   };
-  const total = Object.values(correct).filter(Boolean).length;
   let summary;
 
-  if (total === 3) summary = "You move comfortably between patterns, evidence, and visual intuition — without needing calculation-heavy tasks.";
-  else if (correct.pattern && correct.reasoning) summary = "You connect patterns with careful, evidence-based reasoning.";
-  else if (correct.pattern && correct.spatial) summary = "You quickly notice visual patterns and are willing to question your first instinct.";
-  else if (correct.reasoning && correct.spatial) summary = "Evidence-based reasoning and visual puzzles appear to bring out your strongest thinking.";
+  if (correct.pattern && correct.reasoning) summary = "You connect patterns with careful, evidence-based reasoning.";
   else if (correct.pattern) summary = "Growing patterns catch your eye quickly — a useful instinct for exploring mathematical ideas.";
   else if (correct.reasoning) summary = "You appear most at home when a problem rewards questioning the evidence in front of you.";
-  else if (correct.spatial) summary = "Your visual intuition stands out, especially when a problem asks you to picture movement.";
   else summary = "These puzzles were designed to challenge first instincts — your path reflects what you want from math, not a test score.";
 
   return { correct, summary };
@@ -534,8 +396,7 @@ function renderResult() {
 
   const chipLabels = [
     ["pattern", "Pattern spotting"],
-    ["reasoning", "Evidence-based reasoning"],
-    ["spatial", "Visual intuition"]
+    ["reasoning", "Evidence-based reasoning"]
   ];
   document.querySelector("#skill-chips").innerHTML = chipLabels.map(([key, label]) =>
     `<span class="skill-chip ${profile.correct[key] ? "is-strong" : ""}">${label}${profile.correct[key] ? " · strong signal" : ""}</span>`
@@ -565,12 +426,9 @@ nextButton.addEventListener("click", () => {
 });
 
 feedbackNext.addEventListener("click", () => {
-  stopCoinAnimation();
   feedbackDialog.close();
   advanceQuiz();
 });
-
-feedbackDialog.addEventListener("close", stopCoinAnimation);
 
 backButton.addEventListener("click", () => {
   if (state.step > 0) {

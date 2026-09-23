@@ -38,7 +38,7 @@ Each answer adds points to one or more paths; the quiz recommends the path with 
 | | "Help my child with math" | The Math Parent |
 | "Where does math show up in your life most often?" | "News and statistics" | The Data Decoder |
 
-The two challenge answers shape the result-page snapshot; the five-path recommendation uses the first four questions.
+The first four questions determine the recommended path. Answers to the two challenges only change the short thinking summary and skill labels shown on the result page.
 
 This is the same underlying idea as TripleTen's path quiz: a handful of low-effort questions map to a small set of pre-written content bundles, so the "personalization" is really a well-designed lookup table, not a black box — which keeps it fast to build, easy to QA, and easy to extend with new content later.
 

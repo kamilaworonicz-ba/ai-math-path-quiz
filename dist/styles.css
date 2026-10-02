@@ -223,16 +223,19 @@ input:focus-visible {
   height: 190px;
   top: 98px;
   left: 90px;
-  padding: 35px;
+  border-radius: 56px;
+  padding: 39px;
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 15px;
-  background: var(--lime);
-  transform: rotate(-8deg);
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+  gap: 22px;
+  background: var(--cyan);
+  transform: rotate(-4deg);
 }
 
-.card-pattern span { align-self: end; width: 25px; height: 25px; border-radius: 50%; background: var(--ink); }
-.card-pattern span:nth-child(1), .card-pattern span:nth-child(2), .card-pattern span:nth-child(4) { opacity: 0; }
+.card-pattern span { display: block; width: 100%; height: 100%; border-radius: 50%; background: var(--white); }
+.card-pattern span:first-child { background: var(--lime); }
+.card-pattern span:last-child { background: var(--coral); }
 
 .card-chart {
   width: 210px;
@@ -404,7 +407,7 @@ input:focus-visible {
   background: #f4f6ff;
 }
 
-.quiz-actions { margin-top: 18px; display: flex; align-items: center; justify-content: space-between; }
+.quiz-actions { margin-top: 0; padding-top: 28px; display: flex; align-items: center; justify-content: space-between; }
 .text-button { padding: 12px 4px; border: 0; cursor: pointer; background: transparent; color: var(--muted); font-weight: 800; }
 .text-button:hover { color: var(--blue); }
 .next-button { min-width: 152px; }
@@ -528,7 +531,7 @@ input:focus-visible {
 .form-message.is-success { color: #0a5c3b; font-weight: 800; }
 .restart-button { display: block; margin: 22px auto 0; }
 
-footer { min-height: 76px; border-top: 1px solid var(--line); }
+footer { min-height: 76px; }
 .footer-links { display: flex; align-items: center; gap: 9px; }
 footer a { color: var(--blue); font-weight: 750; text-decoration-thickness: 1px; text-underline-offset: 3px; }
 footer a:hover { color: var(--blue-dark); }
@@ -587,7 +590,6 @@ footer a:hover { color: var(--blue-dark); }
   .selection-note { min-height: 17px; margin-top: 9px; }
   .puzzle-stage { margin-top: 18px; }
   .answer-prompt { margin-top: 16px; }
-  .quiz-actions { margin-top: 10px; }
 }
 
 @media (max-width: 900px) {
@@ -615,8 +617,7 @@ footer a:hover { color: var(--blue-dark); }
   .start-copy { padding: 42px 25px 44px; }
   h1 { font-size: clamp(3rem, 15vw, 4.6rem); }
   .start-visual { min-height: 330px; }
-  .card-pattern { width: 145px; height: 145px; padding: 25px; left: 8%; }
-  .card-pattern span { width: 19px; height: 19px; }
+  .card-pattern { width: 145px; height: 145px; border-radius: 43px; padding: 30px; gap: 17px; left: 8%; }
   .card-fraction { width: 93px; height: 93px; right: 8%; font-size: 1.9rem; }
   .card-chart { width: 160px; height: 128px; right: 10%; bottom: 30px; padding: 20px; }
   .orbit-one { left: 9%; bottom: 34px; }

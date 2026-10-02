@@ -230,7 +230,7 @@ function renderQuestion() {
     answersEl.appendChild(button);
   });
 
-  backButton.style.visibility = state.step === 0 ? "hidden" : "visible";
+  backButton.style.visibility = "visible";
   nextButton.innerHTML = state.step === questions.length - 1
     ? `See my result <span aria-hidden="true">→</span>`
     : `Continue <span aria-hidden="true">→</span>`;
@@ -431,7 +431,9 @@ feedbackNext.addEventListener("click", () => {
 });
 
 backButton.addEventListener("click", () => {
-  if (state.step > 0) {
+  if (state.step === 0) {
+    showScreen(startScreen);
+  } else {
     state.step -= 1;
     renderQuestion();
   }
